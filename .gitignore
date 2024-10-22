@@ -1,0 +1,7 @@
+mnist_data/*
+cifar10-_data/*
+*.ipynb
+*.sh
+*.json
+*.pdf
+*.svg
