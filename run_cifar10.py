@@ -1,10 +1,11 @@
 from config.settings import parse_argument, fix_seeds
-from config.graph import ring_graph
+from config.graph import ring_graph,get_neighbors
 from models.cnn import CNN_C
 from config.datasetup import cifar_10
 import torch.optim as optim
 import torch.nn.functional as F
-
+import random
+import json
 
 
 def train(model,train_loader,optimizer):
@@ -40,7 +41,18 @@ def run_simulation(seed, num_nodes, graph_type, data_set, hetero_k, batch_size, 
         optimizer = optim.SGD(model.parameters(),lr= learning_rate,momentum=0.9)
         train_iters, test_loader = cifar_10(num_nodes, hetero_k, batch_size)
 
-    
+    test_accuracies = []
+    current_state = random.randint(0, num_nodes-1)
     for step in range(iteration):
         print(f"iteration : {step}")
-        
+        train(model,train_iters[current_state],optimizer)
+        test_accuracy = test_model(model,test_loader)
+        data = {
+            f"{step}":test_accuracy
+        }
+        test_accuracies.append(data)
+
+    with open(f"{data_set}_diffchange.json","w") as f:
+                    json.dump(transition_accuracy,f)
+                    f.write("\n")
+
