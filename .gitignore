@@ -1,5 +1,6 @@
 mnist_data/*
 cifar10-_data/*
+data/
 *.ipynb
 *.sh
 *.json
