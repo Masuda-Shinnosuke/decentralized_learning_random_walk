@@ -16,7 +16,7 @@ def parse_argument():
     parser.add_argument("-tr","--train",default="gt_clip")
     parser.add_argument("-mo","--model",default="cnn")
     parser.add_argument("-l","--learning_rate",default="0.01")
-    parser.add_argument("-t","--iteration",default="100")
+    parser.add_argument("-t","--iteration",default="500")
     args = parser.parse_args()
 
 

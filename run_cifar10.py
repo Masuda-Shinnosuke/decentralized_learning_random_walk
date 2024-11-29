@@ -3,7 +3,7 @@ from config.graph import ring_graph,get_neighbors
 from models.cnn import CNN_C
 from walk_method.walk import simpleRandomwalk
 from config.datasetup import cifar_10
-from config.train import  get_parameters, normal_train, adaptive_train, gradient_clipping
+from config.train import  get_parameters, normal_train, adaptive_train,gradient_clipping
 import torch.optim as optim
 import torch.nn.functional as F
 import torch
