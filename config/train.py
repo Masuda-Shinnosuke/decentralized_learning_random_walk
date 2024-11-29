@@ -14,21 +14,23 @@ def get_parameters(model):
 
 def normal_train(model,train_loader,optimizer):
     for image_train, target_train in train_loader:
-        optimizer.zero_grad()
-        output = model(image_train)
-        loss = F.cross_entropy(output,target_train)
-        loss.backward()
-        optimizer.step()
+        break
+    optimizer.zero_grad()
+    output = model(image_train)
+    loss = F.cross_entropy(output,target_train)
+    loss.backward()
+    optimizer.step()
 
 def adaptive_train(model, train_loader, optimizer, momentum, v):
     theta = 0.9
     eta = 0.01
     delta = 1e-8
     for image_train, target_train in train_loader:
-        optimizer.zero_grad()
-        output = model(image_train)
-        loss = F.cross_entropy(output, target_train)
-        loss.backward()
+        break
+    optimizer.zero_grad()
+    output = model(image_train)
+    loss = F.cross_entropy(output, target_train)
+    loss.backward()
 
     with torch.no_grad():
         for param, m_param, v_param in zip(model.parameters(),momentum.parameters(),v.parameters()):
@@ -38,6 +40,23 @@ def adaptive_train(model, train_loader, optimizer, momentum, v):
 
     return momentum,v
 
+def adaptive_mom(model, train_loader, optimizer, momentum):
+    theta = 0.9
+    eta = 0.01
+    
+    for image_train, taeget_train in train_loader:
+        break
+    optimizer.zero_grad()
+    output = model(image_train)
+    loss = F.cross_entropy(output, taeget_train)
+    loss.backward()
+
+    with torch.no_grad():
+        for param, m_param in zip(model.parameters(),momentum.parameters()):
+            m_param.data = theta*m_param.data +(1-theta)*param.grad.data
+            param.data = param.data - eta*m_param.data
+
+    return momentum
 
 def gradient_clipping(model, train_loader, optimizer, momentum, v, lamda):
     theta = 0.9
