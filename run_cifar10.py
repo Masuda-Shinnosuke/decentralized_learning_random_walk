@@ -3,7 +3,7 @@ from config.graph import ring_graph,get_neighbors
 from models.cnn import CNN_C
 from walk_method.walk import simpleRandomwalk
 from config.datasetup import cifar_10
-from config.train import  get_parameters, normal_train, adaptive_train,gradient_clipping,adaptive_mom
+from config.train import  get_parameters, normal_train, adaptive_train,gradient_clipping,clipped_mom,clipped_adaptive, adaptive_mom
 import torch.optim as optim
 import torch.nn.functional as F
 import torch
@@ -56,7 +56,7 @@ def run_simulation(seed, num_nodes, graph_type, data_set, hetero_k, batch_size, 
          param3.data.fill_(0)
          gra.append(param3)
 
-    for step in range(1,iteration-1):
+    for step in range(iteration):
         print(f"iteration : {step}")
 
         if train_type == "normal":
@@ -65,11 +65,17 @@ def run_simulation(seed, num_nodes, graph_type, data_set, hetero_k, batch_size, 
         elif train_type =="adaptive":
             mom,v = adaptive_train(model,train_iters[current_state],optimizer,mom,v)
 
-        elif train_type == "ada_mom":
-            mom = adaptive_mom(model,train_iters[current_state],optimizer,mom)
+        elif train_type == "clipped_mom":
+            mom = clipped_mom(model,train_iters[current_state],optimizer,mom,v)
 
         elif train_type == "gt_clip":
              mom, v = gradient_clipping(model,train_iters[current_state],optimizer, mom, v, 2.0)
+
+        elif train_type == "clipped_ada":
+             mom, v = clipped_adaptive(model,train_iters[current_state],optimizer,mom,v)
+
+        elif train_type == "ada_mom":
+             mom = adaptive_mom(model,train_iters[current_state],optimizer,mom)
 
         test_accuracy = test_model(model,test_loader)
         data = {

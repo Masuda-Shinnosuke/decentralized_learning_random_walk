@@ -10,13 +10,13 @@ def parse_argument():
     parser.add_argument("-s","--seed",default = "2024")
     parser.add_argument("-n","--num_nodes",default="10")
     parser.add_argument("-bs","--batch_size",default="256")
-    parser.add_argument("-hk","--hetero_k",default="10")
+    parser.add_argument("-hk","--hetero_k",default="2")
     parser.add_argument("-gh","--graph_type",default="ring")
     parser.add_argument("-w","--walk",default="srw")
     parser.add_argument("-tr","--train",default="ada_mom")
     parser.add_argument("-mo","--model",default="cnn")
     parser.add_argument("-l","--learning_rate",default="0.01")
-    parser.add_argument("-t","--iteration",default="500")
+    parser.add_argument("-t","--iteration",default="3000")
     args = parser.parse_args()
 
 
